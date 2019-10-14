@@ -19,11 +19,12 @@ class df_EventHandler : EventHandler
 
     bool flipped = df_alternate
                  ? (isPrevFlipped = !isPrevFlipped)
-                 ob: random(0, 1);
+                 : random(0, 1);
 
     if (flipped)
     {
-      thing.A_SetScale(-1.0, 1.0, AAPTR_DEFAULT);
+      flip(thing);
+      thing.GiveInventory("df_MirroredFlag", 1);
     }
   }
 
@@ -36,6 +37,14 @@ class df_EventHandler : EventHandler
     if (blacklist.contains(thing.GetClassName())) { return; }
 
     thing.GiveInventory("df_Unflipper", 1);
+  }
+
+// public: /////////////////////////////////////////////////////////////////////
+
+  static
+  void flip(Actor thing)
+  {
+    thing.A_SetScale(-thing.Scale.X, thing.Scale.Y);
   }
 
 // private: /////////////////////////////////////////////////////////////////////
@@ -60,7 +69,12 @@ class df_Unflipper : Inventory
 
     if (!isRevived)
     {
-      owner.A_SetScale(1.0, 1.0, AAPTR_DEFAULT);
+      if (owner.CountInv("df_MirroredFlag"))
+      {
+        df_EventHandler.flip(owner);
+        owner.TakeInventory("df_MirroredFlag", 1);
+      }
+
       Destroy();
     }
 
@@ -89,13 +103,13 @@ class df_StringSet
     int R = values.size() - 1;
 
     while (L <= R)
-      {
-        int m = (L + R) / 2;
-        string current = values[m];
-        if      (current <  s) { L = m + 1; }
-        else if (current >  s) { R = m - 1; }
-        else if (current == s) { return true; }
-      }
+    {
+      int m = (L + R) / 2;
+      string current = values[m];
+      if      (current <  s) { L = m + 1; }
+      else if (current >  s) { R = m - 1; }
+      else if (current == s) { return true; }
+    }
     return false;
   }
 
@@ -104,3 +118,5 @@ class df_StringSet
   private Array<String> values;
 
 } // class df_StringSet
+
+class df_MirroredFlag : Inventory {}
