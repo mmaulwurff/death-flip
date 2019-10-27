@@ -90,8 +90,11 @@ class df_StringSet
   df_StringSet init()
   {
     // must be sorted.
-    values.push("ChaingunGuy");
-    values.push("Cyberdemon");
+    values.push("ChaingunGuy"); // Doom
+    values.push("Cyberdemon");  // Doom
+    values.push("Draugr");      // Hell-Forged
+    values.push("Hellduke");    // Hell-Forged
+    values.push("Hellsmith");   // Hell-Forged
 
     return self;
   }
