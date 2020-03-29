@@ -90,6 +90,7 @@ class df_StringSet
   df_StringSet init()
   {
     // must be sorted.
+    values.push("BossBrain");
     values.push("ChaingunGuy");
     values.push("Cyberdemon");
 
